@@ -1,6 +1,6 @@
 # [amr-md-links](https://www.npmjs.com/package/amr-md-links)
 
-#### Es una librería que lee y analiza en formato Markdown, permite validar URL o links entregándonos información y sus estados, ejemplo(404, Not Found).
+Es una librería que lee y analiza en formato Markdown, permite validar URL o links entregándonos información y sus estados, ejemplo(404, Not Found).
 
 ## Instalación
 
