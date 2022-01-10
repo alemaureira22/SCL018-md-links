@@ -15,21 +15,20 @@ const option = Yargs(process.argv.slice(2)).argv;
 const regEx = /\[([^\]]+)]\((https?:\/\/[^\s)]+)\)/g;//expresion regular
 
 const mdFile = (fileToRead) => {
-  const ext = path.extname(fileToRead.toLowerCase());
+const ext = path.extname(fileToRead.toLowerCase());
   if (ext === ".md") {
-    return readUserFile(fileToRead);
+    return true;
   } else {
-    console.log("Extensión del archivo incorrecto");
+    console.log("No es un archivo md");
   }
+
 };
 
 const readUserFile = (readFile) => {
   try {
-    if (fs.existsSync(readFile)) {
-      const data = fs.readFileSync(readFile,"utf8")
-      return searchLinks(data);
-    }
-  } catch (err) {
+    const data = fs.readFileSync(readFile,"utf8");
+    return searchLinks(data);
+    }catch (err) {
     console.log(err);
   }
 };
@@ -59,7 +58,7 @@ const searchLinks = (path) => {
 const urlValidate = (links) => {
   const validated = links.map((link) =>//calback
     fetch(link.href).then((response) => {
-      return {
+       return {
         text: link.text,
         href: link.href,
         path: link.path,
@@ -74,20 +73,19 @@ const urlValidate = (links) => {
 };
 
 // funcio padre
-const mdLinks = (fileToRead) => {
-  return new Promise((resolve, reject) => {
-    const links = mdFile(fileToRead);
+const mdLinks = (readFile) => {
+   return new Promise((resolve, reject) => {
+    const links = readUserFile(readFile);
     if (option.validate) {
       resolve(urlValidate(links));
     } else {
       resolve(links);
     }
-    reject(err);
-    console.log(err)
+    reject();
   });
 };
 
-mdLinks(userPath).then((results) => console.log(results));
+mdLinks(userPath).then((results) => console.table(results));
 
 export { 
   mdLinks,
